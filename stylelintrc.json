@@ -1,0 +1,38 @@
+{
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order"
+  ],
+  "rules": {
+    "indentation": [ 4, {
+       "message": "インデントはスペース4つ！"
+    }],
+    "max-nesting-depth":  [ 4, {
+       "message": "ネストは4ぐらいでおさえとこう！"
+    }],
+    "declaration-no-important": [ true, {
+      "message": "!import はなるべくやめよう！"
+    }],
+
+    "string-quotes": "double",
+    "length-zero-no-unit": true,
+    "value-list-comma-space-after": "always",
+    "declaration-colon-space-after": "always",
+    "declaration-block-single-line-max-declarations": 0,
+    "block-no-empty": true,
+    "block-opening-brace-newline-after": "always",
+    "block-closing-brace-newline-before": "always",
+    "block-opening-brace-space-before": "always",
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-block-trailing-semicolon": "always",
+    "selector-combinator-space-after": "always",
+    "selector-combinator-space-before": "always",
+    "selector-list-comma-space-after": "always",
+
+    "scss/dollar-variable-pattern": [ "foo-", {
+      "message": "変数でfoo-はつかったらあかんで！"
+    }],
+
+  }
+}
+
