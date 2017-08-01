@@ -76,6 +76,8 @@ __webpack_require__(2);
 
 __webpack_require__(3);
 
+__webpack_require__(4);
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
@@ -88,39 +90,6 @@ __webpack_require__(3);
 
 "use strict";
 
-
-// var testXXX = function () {
-//     return alert("Hello world XXX");
-// };
-// document.addEventListener( "DOMContentLoaded", testXXX, false);
-
-// function testZZZ() {
-//     return alert("Hello world ZZZ");
-// }
-// document.addEventListener( "DOMContentLoaded", testZZZ, false);
-
-// クロージャを利用した外部から見えない名前空間
-// var obj = (function() {
-//     // 関数の外部かららこの名前にアクセスできない
-//     // 事実上、プライベートな変数
-//     // 通常、関数の呼び出しが終わればアクセスできない名前だが、返り値の無名関数の中から使える
-//     var position = { x : 2 , y : 3 , };
-
-//     // 関数の外部からアクセスできないプライベート関数
-//     // 名前をsumにしても問題ないが、余計な混乱を避けるため別名
-//     function sum_internal(a,b) {
-//         return Number(a) + Number(b);
-//     }
-
-//     // 上記2つの名前を強引に使うだけの憑依的な返り値
-//     return {
-//         sum : function(a,b) { return sum_internal(a,b); },
-//         x : position.x,
-//     };
-// })();
-// console.log(obj.sum(3, 4));
-// console.log(obj.x);
-// var MYAPP = "test";
 
 var MYAPP = MYAPP || {};
 
@@ -160,34 +129,43 @@ MYAPP.stickyHeader = function () {
 };
 window.addEventListener("scroll", MYAPP.stickyHeader, false);
 
-// // プロトタイプ継承の見本
-// var Quo = function(string) {
-//     this.status = string;
-// };
-// Quo.prototype.get_status = function() {
-//     return this.status;
-// };
-// var myQuo = new Quo("confused");
-// document.getElementById("test").innerHTML = myQuo.get_status();
-
-
-// var myObject = {
-//     myProperty: "Hello!!",
-//     myMethod: function() {
-//         var that = this; // that で this = myObject への参照を保持
-//         var myMethod2 = function() {
-//             console.log(that.myProperty); // 出力： "Hello!!"
-//             console.log(this); // 出力： undefined（ES5以前はバグで window）
-//             var myMethod3 = function() {
-//                 console.log(this); // 出力： undefined（ES5以前はバグで window）
-//             }();
-//         }();
-//     }
-// };
-// myObject.myMethod();
-
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// var MYAPP = MYAPP || {};
+
+// MYAPP.cookie = {
+//     setCookie: function(name, value, expires, domain, path) {
+//         var _cookieData = "";
+//         // add each arguments
+//         _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
+//         if(expires) {
+//             var _exp = new Date();
+//             _exp.setDate(_exp.getDate() + expires);
+//             _cookieData += "; expires=" + _exp.toGMTString();
+//         }
+//         // console.log("_cookieData=" + _cookieData);
+//         document.cookie = _cookieData;
+//     },
+
+//     getCookie: function(name) {
+//         var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
+//         for (var i = 0; i < _cList.length; i++) {
+//             var _cName = _cList[i].split("=");
+//             // back value with decode
+//             if(_cName[0] == name) {
+//                 return decodeURIComponent(_cName[1]);
+//             }
+//         }
+//         return null; // if not found name
+//     }
+// };
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -195,14 +173,51 @@ window.addEventListener("scroll", MYAPP.stickyHeader, false);
 
 var MYAPP = MYAPP || {};
 
+MYAPP.cookie = {
+    setCookie: function setCookie(name, value, expires, domain, path) {
+        var _cookieData = "";
+        // add each arguments
+        _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
+        if (expires) {
+            var _exp = new Date();
+            _exp.setDate(_exp.getDate() + expires);
+            _cookieData += "; expires=" + _exp.toGMTString();
+        }
+        // console.log("_cookieData=" + _cookieData);
+        document.cookie = _cookieData;
+    },
+
+    getCookie: function getCookie(name) {
+        var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
+        for (var i = 0; i < _cList.length; i++) {
+            var _cName = _cList[i].split("=");
+            // back value with decode
+            if (_cName[0] == name) {
+                return decodeURIComponent(_cName[1]);
+            }
+        }
+        return null; // if not found name
+    }
+};
+
 MYAPP.tab = function () {
+
     var _tab_element = document.querySelector("[data-js-hook='tab']");
-    // var _tab_nav = _tab_element.querySelector("[data-js-hook='tab-nav']");
     var _tab_nav_list = _tab_element.querySelectorAll("[data-js-tab-nav]");
     var _tab_content_list = _tab_element.querySelectorAll("[data-js-tab-content]");
 
+    var _savedActiveTabNumber = MYAPP.cookie.getCookie("myComponentTabNumber"); //get cookie and active the tab
+    tabClick(_tab_element.querySelector("[data-js-tab-nav='" + _savedActiveTabNumber + "']"));
+
     function tabClick(elm) {
-        var _thisTab = elm.target;
+        var _thisTab;
+        if (elm instanceof HTMLElement) {
+            _thisTab = elm;
+        } else if (elm === null) {
+            return;
+        } else {
+            _thisTab = elm.target;
+        }
         var _thisTabNumber = _thisTab.getAttribute("data-js-tab-nav");
         var _thisTabContent = _tab_element.querySelector("[data-js-tab-content='" + _thisTabNumber + "']");
 
@@ -221,8 +236,9 @@ MYAPP.tab = function () {
 
         _thisTab.classList.add("is_active");
         _thisTabContent.classList.add("is_active");
+        MYAPP.cookie.setCookie("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
     }
-    // _tab_nav.addEventListener( "click", tabClick, false);
+
     // Each tabs addEventListener
     for (var k = 0; k < _tab_nav_list.length; k++) {
         // console.log(_tab_nav_list[k]);
