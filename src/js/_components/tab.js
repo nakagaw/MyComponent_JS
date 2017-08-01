@@ -1,13 +1,21 @@
 var MYAPP = MYAPP || {};
 
 MYAPP.tab = (function () {
+
     var _tab_element = document.querySelector("[data-js-hook='tab']");
-    // var _tab_nav = _tab_element.querySelector("[data-js-hook='tab-nav']");
     var _tab_nav_list = _tab_element.querySelectorAll("[data-js-tab-nav]");
     var _tab_content_list = _tab_element.querySelectorAll("[data-js-tab-content]");
 
+    var _savedActiveTabNumber = getCookie("myComponentTabNumber"); //get cookie and active the tab
+    tabClick(_tab_element.querySelector("[data-js-tab-nav='" + _savedActiveTabNumber + "']"));
+
     function tabClick(elm) {
-        var _thisTab = elm.target;
+        var _thisTab;
+        if( elm instanceof HTMLElement ) {
+            _thisTab = elm;
+        } else {
+            _thisTab = elm.target;
+        }
         var _thisTabNumber = _thisTab.getAttribute("data-js-tab-nav");
         var _thisTabContent = _tab_element.querySelector("[data-js-tab-content='" + _thisTabNumber + "']");
 
@@ -26,9 +34,37 @@ MYAPP.tab = (function () {
 
         _thisTab.classList.add("is_active");
         _thisTabContent.classList.add("is_active");
+        setCookie("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
     }
-    // _tab_nav.addEventListener( "click", tabClick, false);
+
+    function setCookie(name, value, expires, domain, path) {
+        var _cookieData= "";
+        // add each arguments
+        _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
+        if(expires) {
+            var _exp = new Date();
+            _exp.setDate(_exp.getDate() + expires);
+            _cookieData += "; expires=" + _exp.toGMTString();
+        }
+        // console.log("_cookieData=" + _cookieData);
+        document.cookie = _cookieData;
+    }
+
+    function getCookie(name) {
+        var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
+        for (var i = 0; i < _cList.length; i++) {
+            var _cName = _cList[i].split("=");
+            // back value with decode
+            if(_cName[0] == name) {
+                return decodeURIComponent(_cName[1]);
+            }
+        }
+        return null; // if not found name
+    }
+
     // Each tabs addEventListener
+    // var _tab_nav = _tab_element.querySelector("[data-js-hook='tab-nav']");
+    // _tab_nav.addEventListener( "click", tabClick, false);
     for (var k = 0; k < _tab_nav_list.length; k++) {
         // console.log(_tab_nav_list[k]);
         _tab_nav_list[k].addEventListener("click", tabClick, false);
