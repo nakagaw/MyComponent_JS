@@ -16,9 +16,19 @@ const extractCSS = new ExtractTextPlugin({
   allChunks: true
 })
 
+// js の共通部分を別ファイルで dist
+const extractCommons = new webpack.optimize.CommonsChunkPlugin({
+  name: 'base',
+  filename: './js/base.js',
+  minChunks: Infinity //エントリーポイントに記述したモジュール以外はバンドルされない
+})
+
 const config = {
   context: path.resolve(__dirname, 'src'),
-  entry: './js/app.js',
+  entry: {
+    // base: ['./js/_components/cookie.js'],
+    app: './js/app.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: './js/[name].bundle.js'
@@ -169,6 +179,7 @@ const config = {
   devtool: 'source-map',
   plugins: [
     extractHTML,
+    extractCommons,
     extractCSS
   ],
   // resolve: {
