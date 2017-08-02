@@ -1,7 +1,5 @@
-// var MYAPP = MYAPP || {};
-
-// MYAPP.cookie = {
-//     setCookie: function(name, value, expires, domain, path) {
+// export default class Cookie {
+//     setCookie(name, value, expires, domain, path) {
 //         var _cookieData = "";
 //         // add each arguments
 //         _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
@@ -12,9 +10,9 @@
 //         }
 //         // console.log("_cookieData=" + _cookieData);
 //         document.cookie = _cookieData;
-//     },
+//     }
 
-//     getCookie: function(name) {
+//     getCookie(name) {
 //         var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
 //         for (var i = 0; i < _cList.length; i++) {
 //             var _cName = _cList[i].split("=");
@@ -25,4 +23,4 @@
 //         }
 //         return null; // if not found name
 //     }
-// };
+// }

@@ -93,33 +93,33 @@ __webpack_require__(4);
 
 var MYAPP = MYAPP || {};
 
-MYAPP.consoleTip = function () {
+MYAPP.ConsoleTip = function () {
     var _headerHiehgt = document.querySelector("[data-js-hook='sticky-header']").clientHeight;
     document.querySelector("[data-js-element='console-tip']").setAttribute("style", "margin-top:" + _headerHiehgt + "px");
 }();
 
-MYAPP.windowSize = function () {
+MYAPP.WindowSize = function () {
     var _target = document.getElementById("window-size");
     _target.innerHTML = "window size : " + window.innerWidth + " px × " + window.innerHeight + " px";
 };
-MYAPP.windowSize();
-window.onresize = MYAPP.windowSize; // （）あるとリアルタイムじゃない
+MYAPP.WindowSize();
+window.onresize = MYAPP.WindowSize; // （）あるとリアルタイムじゃない
 
-MYAPP.cursurPoint = function (event) {
+MYAPP.CursurPoint = function (event) {
     var _moveEvent = event || window.event; // IE対応
     var _target = document.getElementById("cursor-point");
     _target.innerHTML = "pointer : x : " + _moveEvent.clientX + " y : " + _moveEvent.clientY;
 };
-window.onmousemove = MYAPP.cursurPoint;
+window.onmousemove = MYAPP.CursurPoint;
 
-MYAPP.pageScroll = function () {
+MYAPP.PageScroll = function () {
     var _target = document.getElementById("page-scroll");
     var winScrollMaxY = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     _target.innerHTML = "page scroll : " + window.scrollY + "/" + winScrollMaxY + "px";
 };
-window.addEventListener("scroll", MYAPP.pageScroll, false);
+window.addEventListener("scroll", MYAPP.PageScroll, false);
 
-MYAPP.stickyHeader = function () {
+MYAPP.StickyHeader = function () {
     var _element = document.querySelector("[data-js-hook='sticky-header']");
     if (_element.clientHeight < window.scrollY) {
         return _element.classList.add("is_fixed");
@@ -127,17 +127,15 @@ MYAPP.stickyHeader = function () {
         return _element.classList.remove("is_fixed");
     }
 };
-window.addEventListener("scroll", MYAPP.stickyHeader, false);
+window.addEventListener("scroll", MYAPP.StickyHeader, false);
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// var MYAPP = MYAPP || {};
-
-// MYAPP.cookie = {
-//     setCookie: function(name, value, expires, domain, path) {
+// export default class Cookie {
+//     setCookie(name, value, expires, domain, path) {
 //         var _cookieData = "";
 //         // add each arguments
 //         _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
@@ -148,9 +146,9 @@ window.addEventListener("scroll", MYAPP.stickyHeader, false);
 //         }
 //         // console.log("_cookieData=" + _cookieData);
 //         document.cookie = _cookieData;
-//     },
+//     }
 
-//     getCookie: function(name) {
+//     getCookie(name) {
 //         var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
 //         for (var i = 0; i < _cList.length; i++) {
 //             var _cName = _cList[i].split("=");
@@ -161,7 +159,7 @@ window.addEventListener("scroll", MYAPP.stickyHeader, false);
 //         }
 //         return null; // if not found name
 //     }
-// };
+// }
 
 
 /***/ }),
@@ -173,7 +171,7 @@ window.addEventListener("scroll", MYAPP.stickyHeader, false);
 
 var MYAPP = MYAPP || {};
 
-MYAPP.cookie = {
+MYAPP.Cookie = {
     setCookie: function setCookie(name, value, expires, domain, path) {
         var _cookieData = "";
         // add each arguments
@@ -186,7 +184,6 @@ MYAPP.cookie = {
         // console.log("_cookieData=" + _cookieData);
         document.cookie = _cookieData;
     },
-
     getCookie: function getCookie(name) {
         var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
         for (var i = 0; i < _cList.length; i++) {
@@ -200,13 +197,13 @@ MYAPP.cookie = {
     }
 };
 
-MYAPP.tab = function () {
+MYAPP.Tab = function () {
 
     var _tab_element = document.querySelector("[data-js-hook='tab']");
     var _tab_nav_list = _tab_element.querySelectorAll("[data-js-tab-nav]");
     var _tab_content_list = _tab_element.querySelectorAll("[data-js-tab-content]");
 
-    var _savedActiveTabNumber = MYAPP.cookie.getCookie("myComponentTabNumber"); //get cookie and active the tab
+    var _savedActiveTabNumber = MYAPP.Cookie.getCookie("myComponentTabNumber"); //get cookie and active the tab
     tabClick(_tab_element.querySelector("[data-js-tab-nav='" + _savedActiveTabNumber + "']"));
 
     function tabClick(elm) {
@@ -236,7 +233,7 @@ MYAPP.tab = function () {
 
         _thisTab.classList.add("is_active");
         _thisTabContent.classList.add("is_active");
-        MYAPP.cookie.setCookie("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
+        MYAPP.Cookie.setCookie("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
     }
 
     // Each tabs addEventListener
