@@ -1,13 +1,19 @@
 import Cookie from "./cookie.js";
-// import {Cookie} from "./cookie.js";
 
 (function () {
+    var _tabs = document.querySelectorAll("[data-js-tab]");
+    for (var h = 1; h <= _tabs.length; h++) {
+        var tab_element_number = "[data-js-tab='" + h + "']";
+        CookieTab(tab_element_number, h);
+    }
+}());
 
-    var _tab_element = document.querySelector("[data-js-hook='tab']");
+function CookieTab(tabElm, tabNum) {
+    var _tab_element = document.querySelector(tabElm);
     var _tab_nav_list = _tab_element.querySelectorAll("[data-js-tab-nav]");
     var _tab_content_list = _tab_element.querySelectorAll("[data-js-tab-content]");
 
-    var _savedActiveTabNumber = Cookie.get("myComponentTabNumber"); //get cookie and active the tab
+    var _savedActiveTabNumber = Cookie.get("myComponentTabNumber_" + tabNum); //get cookie and active the tab
     tabClick(_tab_element.querySelector("[data-js-tab-nav='" + _savedActiveTabNumber + "']"));
 
     function tabClick(elm) {
@@ -37,7 +43,7 @@ import Cookie from "./cookie.js";
 
         _thisTab.classList.add("is_active");
         _thisTabContent.classList.add("is_active");
-        return Cookie.set("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
+        return Cookie.set("myComponentTabNumber_" + tabNum, _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
     }
 
     // Each tabs addEventListener
@@ -45,4 +51,4 @@ import Cookie from "./cookie.js";
         // console.log(_tab_nav_list[k]);
         _tab_nav_list[k].addEventListener("click", tabClick, false);
     }
-}());
+}

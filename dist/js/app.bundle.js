@@ -71,13 +71,24 @@ window.addEventListener("scroll", MYAPP.StickyHeader, false);
 
 var _cookie = __webpack_require__(4);
 
-(function () {
+var _cookie2 = _interopRequireDefault(_cookie);
 
-    var _tab_element = document.querySelector("[data-js-hook='tab']");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+    var _tabs = document.querySelectorAll("[data-js-tab]");
+    for (var h = 1; h <= _tabs.length; h++) {
+        var tab_element_number = "[data-js-tab='" + h + "']";
+        CookieTab(tab_element_number, h);
+    }
+})();
+
+function CookieTab(tabElm, tabNum) {
+    var _tab_element = document.querySelector(tabElm);
     var _tab_nav_list = _tab_element.querySelectorAll("[data-js-tab-nav]");
     var _tab_content_list = _tab_element.querySelectorAll("[data-js-tab-content]");
 
-    var _savedActiveTabNumber = _cookie.Cookie.get("myComponentTabNumber"); //get cookie and active the tab
+    var _savedActiveTabNumber = _cookie2.default.get("myComponentTabNumber_" + tabNum); //get cookie and active the tab
     tabClick(_tab_element.querySelector("[data-js-tab-nav='" + _savedActiveTabNumber + "']"));
 
     function tabClick(elm) {
@@ -107,7 +118,7 @@ var _cookie = __webpack_require__(4);
 
         _thisTab.classList.add("is_active");
         _thisTabContent.classList.add("is_active");
-        return _cookie.Cookie.set("myComponentTabNumber", _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
+        return _cookie2.default.set("myComponentTabNumber_" + tabNum, _thisTabNumber, 90, "localhost", "/"); // cookie name and tab num, keep dates
     }
 
     // Each tabs addEventListener
@@ -115,7 +126,7 @@ var _cookie = __webpack_require__(4);
         // console.log(_tab_nav_list[k]);
         _tab_nav_list[k].addEventListener("click", tabClick, false);
     }
-})();
+}
 
 /***/ }),
 /* 4 */
@@ -127,31 +138,49 @@ var _cookie = __webpack_require__(4);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var Cookie = exports.Cookie = {
-    set: function set(name, value, expires, domain, path) {
-        var _cookieData = "";
-        // add each arguments
-        _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
-        if (expires) {
-            var _exp = new Date();
-            _exp.setDate(_exp.getDate() + expires);
-            _cookieData += "; expires=" + _exp.toGMTString();
-        }
-        // console.log("_cookieData=" + _cookieData);
-        document.cookie = _cookieData;
-    },
-    get: function get(name) {
-        var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
-        for (var i = 0; i < _cList.length; i++) {
-            var _cName = _cList[i].split("=");
-            // back value with decode
-            if (_cName[0] == name) {
-                return decodeURIComponent(_cName[1]);
-            }
-        }
-        return null; // if not found name
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Cookie = function () {
+    function Cookie() {
+        _classCallCheck(this, Cookie);
     }
-};
+
+    _createClass(Cookie, null, [{
+        key: "set",
+        value: function set(name, value, expires, domain, path) {
+            var _cookieData = "";
+            // add each arguments
+            _cookieData += name + "=" + encodeURIComponent(value) + "; domain=" + domain + "; path=" + path;
+            if (expires) {
+                var _exp = new Date();
+                _exp.setDate(_exp.getDate() + expires);
+                _cookieData += "; expires=" + _exp.toGMTString();
+            }
+            // console.log("_cookieData=" + _cookieData);
+            document.cookie = _cookieData;
+        }
+    }, {
+        key: "get",
+        value: function get(name) {
+            var _cList = document.cookie.replace(/\s+/g, "").split(";"); // and delete Half-width spaces
+            for (var i = 0; i < _cList.length; i++) {
+                var _cName = _cList[i].split("=");
+                // back value with decode
+                if (_cName[0] == name) {
+                    return decodeURIComponent(_cName[1]);
+                }
+            }
+            return null; // if not found name
+        }
+    }]);
+
+    return Cookie;
+}();
+
+exports.default = Cookie;
 
 /***/ })
 ],[0]);

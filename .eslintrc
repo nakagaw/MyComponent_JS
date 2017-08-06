@@ -13,9 +13,9 @@
     },
     "rules": {
         // enable additional rules
-        "indent": ["error", 4],
+        "indent": ["warn", 4],
         "linebreak-style": ["error", "unix"],
-        "quotes": ["error", "double"],
+        "quotes": ["warn", "double"],
         "semi": ["error", "always"],
 
         // セミコロンの前後どっちにも空白つける
@@ -30,7 +30,7 @@
 
         // disable rules from base configurations
         "no-console": "off",
-        'no-unused-vars': ['warn'],
+        'no-unused-vars': ["warn"],
     }
 }
 
