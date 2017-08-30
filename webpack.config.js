@@ -1,27 +1,27 @@
-const webpack = require('webpack')
-const path = require('path')
+const webpack = require('webpack');
+const path = require('path');
 
 // html を別ファイルで dist
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const extractHTML = new HtmlWebpackPlugin({
   filename: './index.html', //出力ファイル名
   template: './template/index.ejs'
-})
+});
 
 // css を別ファイルで dist
-const ExtractTextPlugin = require('extract-text-webpack-plugin') //読み込む
+const ExtractTextPlugin = require('extract-text-webpack-plugin'); //読み込む
 const extractCSS = new ExtractTextPlugin({
   filename: './css/[name].bundle.css', //出力ファイル名:元ファイル名.bundle.css という名前になる
   disable: false,
   allChunks: true
-})
+});
 
 // js の共通部分を別ファイルで dist
 const extractCommons = new webpack.optimize.CommonsChunkPlugin({
   name: 'base',
   filename: './js/base.js',
   minChunks: Infinity //エントリーポイントに記述したモジュール以外はバンドルされない
-})
+});
 
 const config = {
   context: path.resolve(__dirname, 'src'),
@@ -161,7 +161,7 @@ const config = {
               }
             },
             {
-              loader: 'stylefmt-loader',
+              loader: 'stylefmt-loader', // fmtがあると閉じ括弧のエラーとか出ないので注意
               options: {
                 config: './stylelintrc.json'
               }
