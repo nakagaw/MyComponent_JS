@@ -21,6 +21,10 @@ MYAPP.Tooltip = (function () {
     resizeTimer = setTimeout(function () {
         function replaceTooltip(elm) {
             var _tooltip = elm.currentTarget;
+            var _tooltipRect = _tooltip.getBoundingClientRect();
+            var _tooltipL = _tooltipRect.left;
+            var _tooltipR = _tooltipRect.right;
+
             var _element = _tooltip.getElementsByClassName("tooltip__text")[0];
             var _windowInnerWidth = document.body.clientWidth; // El. width minus scrollbar width
             var _elementRect = _element.getBoundingClientRect();
@@ -29,24 +33,21 @@ MYAPP.Tooltip = (function () {
             var _elementR = _elementRect.right;
             // var _elementT = _elementRect.top;
             // var _elementHeight = _elementRect.height;
-            console.log("_elementWidth : " + _elementWidth);
+            console.log("_windowInnerWidth - _tooltipR : " + (_windowInnerWidth - _tooltipR));
+            console.log("_windowInnerWidth - _tooltipL : " + (_windowInnerWidth - _tooltipL));
+            console.log("_tooltipL : " + _tooltipL);
+            console.log("_tooltipR : " + _tooltipR);
+            console.log("_windowInnerWidth - _elementWidth : " + (_windowInnerWidth - _elementWidth));
             console.log("_elementL : " + _elementL);
             console.log("_elementR : " + _elementR);
             console.log("_windowInnerWidth : " + _windowInnerWidth);
             console.count("count");
 
-            if (_windowInnerWidth < _elementR) {
-                 _element.classList.add("is_left");
-            } else if(_windowInnerWidth - _elementWidth < _elementWidth){
-                _element.classList.add("is_centered");
+            if (_windowInnerWidth - _tooltipR < _elementWidth) {
+                _element.classList.add("is_left");
             } else {
-                _element.classList.remove("is_centered");
                 _element.classList.remove("is_left");
-                if (_elementL < 0) {
-                     _element.classList.add("is_centered");
-                } else {
-                    _element.classList.remove("is_centered");
-                }
+                // _element.classList.remove("is_centered");
             }
         }
 
